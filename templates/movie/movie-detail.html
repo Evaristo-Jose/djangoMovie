@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}<title >Crear/Editar Pel&iacute;cula</title>{% endblock %}
+
+{% block container %}
+    <header>
+        {% if movieObject.id %}
+        <h1 class="text-center mt-4 mb-5">Editar Película</h1>
+        {% else %}
+        <h1 class="text-center mt-4 mb-5">Crear nueva película</h1>
+        {% endif %}
+    </header>
+
+
+        <div class="row">
+            <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <form action="{% url 'movie-save' %}" enctype="multipart/form-data" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="hidden" required class="form-control" id="id" name="id" value="{{ movieObject.id }}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label id="{{ form.field_name }}" class="form-label">Nombre:</label>
+                            <br>
+                            {{ form.name }}
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label id="{{ form.field_description }}" class="form-label">Descripción:</label>
+                            <br>
+                            {{ form.description }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label id="{{ form.field_image }}" class="form-label">Imagen:</label>
+                            <br>
+                            {{ form.image }}
+                            <br />
+                            <img id="imgSalida" width="50%" height="50%" src="" />
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="image_url" class="form-label">Imagen url:</label>
+                            <input class="form-control" type="text" id="image_url" name="image_url" value="{{ MovieForm.image_url }}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label id="{{ form.field_cost }}" class="form-label">Costo:</label>
+                            <br>
+                            {{ form.cost }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label id="{{ form.field_date }}" class="form-label">Fecha estreno:</label>
+                            <br>
+                            {{ form.date }}
+                        </div>
+
+
+<!--                        <div class="mb-3">-->
+<!--                            <label for="protagonista" class="form-label">Protagonista:</label>-->
+<!--                            <input type="text" class="form-control" id="protagonista" name="protagonista">-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                            <label for="director" class="form-label">Director:</label>-->
+<!--                            <input type="text" class="form-control" id="director" name="director">-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                            <label for="estudio" class="form-label">Estudio:</label>-->
+<!--                            <input type="text" class="form-control" id="estudio" name="estudio">-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                            <label for="coste" class="form-label">Coste:</label>-->
+<!--                            <input type="text" class="form-control" id="coste" name="coste">-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                            <label for="recaudacion" class="form-label">Recaudación:</label>-->
+<!--                            <input type="text" class="form-control" id="recaudacion" name="recaudacion">-->
+<!--                        </div>-->
+
+
+                        <div class="mb-3 d-grid gap-2">
+                            <button class="btn btn-primary" type="submit">Guardar</button>
+                            <a class="btn btn-info" href="{% url 'index' %}">Volver al listado</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-2"></div>
+        </div>
+
+{% endblock %}
