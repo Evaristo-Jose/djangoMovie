@@ -1,4 +1,7 @@
 import os
+import requests
+import io
+from PIL import Image
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -66,14 +69,14 @@ def movie_save(request):
         form = MovieForm(request.POST, request.POST.get('image_url'), request.FILES, instance=movie)
         if request.POST.get('image_url') != '':
             url = request.POST.get('image_url')
+            response = requests.get(url)
+            img = Image.open(io.BytesIO(response.content))
             parsed = urlparse(url)
             cadena = parsed.path
             posicion_barra = cadena.rfind('/')
             myimage = cadena[posicion_barra + 1:]
             location = '/static/img/'
-            # os.system(os.getcwd() + location + myimage)
-            with open(os.getcwd() + location + myimage) as f:
-               file = f.read()
+            img.save(os.getcwd() + location + myimage)
             movie.image = myimage
         else:
             movie.image = request.FILES.get('image')
