@@ -8,6 +8,8 @@ from django.shortcuts import render, redirect
 from .forms import MovieForm
 from .models import Movie
 
+from urllib.parse import urlparse
+
 
 def movie_view(request, id):
     data = {
@@ -56,13 +58,23 @@ def movie_new(request):
 def movie_save(request):
     id_movie = request.POST.get('id')
     if id_movie == '':
-        form = MovieForm(request.POST, request.FILES)
+        form = MovieForm(request.POST, request.POST.get('image_url'), request.FILES)
     else:
         id_movie = int(id_movie)
         movie = Movie.objects.get(id=id_movie)
-        form = MovieForm(request.POST, request.FILES, instance=movie)
-        form.append(request.POST.get('image_url'))
-        movie.image = request.FILES.get('image')
+        form = MovieForm(request.POST, request.POST.get('image_url'),  request.FILES, instance=movie)
+        if request.POST.get('image_url') != '':
+            url = request.POST.get('image_url')
+            parsed = urlparse(url)
+            cadena = parsed.path
+            posicion_barra = cadena.rfind('/')
+            myimage = cadena[posicion_barra + 1:]
+            location = '/static/img/'
+            file = open(os.getcwd() + location + myimage, 'wb')
+            file.close()
+            movie.image = myimage
+        else:
+            movie.image = request.FILES.get('image')
     if not form.is_valid():
         return HttpResponseRedirect('/cinema/movie-new')
     location = 'static/img'
