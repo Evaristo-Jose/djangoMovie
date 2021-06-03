@@ -56,13 +56,14 @@ def movie_new(request):
 
 
 def movie_save(request):
+    global movie
     id_movie = request.POST.get('id')
     if id_movie == '':
         form = MovieForm(request.POST, request.POST.get('image_url'), request.FILES)
     else:
         id_movie = int(id_movie)
         movie = Movie.objects.get(id=id_movie)
-        form = MovieForm(request.POST, request.POST.get('image_url'),  request.FILES, instance=movie)
+        form = MovieForm(request.POST, request.POST.get('image_url'), request.FILES, instance=movie)
         if request.POST.get('image_url') != '':
             url = request.POST.get('image_url')
             parsed = urlparse(url)
@@ -70,11 +71,13 @@ def movie_save(request):
             posicion_barra = cadena.rfind('/')
             myimage = cadena[posicion_barra + 1:]
             location = '/static/img/'
-            file = open(os.getcwd() + location + myimage, 'wb')
-            file.close()
+            # os.system(os.getcwd() + location + myimage)
+            with open(os.getcwd() + location + myimage) as f:
+               file = f.read()
             movie.image = myimage
         else:
             movie.image = request.FILES.get('image')
+    form = MovieForm(request.POST, request.FILES, instance=movie)
     if not form.is_valid():
         return HttpResponseRedirect('/cinema/movie-new')
     location = 'static/img'

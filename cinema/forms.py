@@ -10,12 +10,12 @@ class MovieForm(forms.ModelForm):
         model = Movie
         fields = ['name', 'description', 'image', 'cost', 'date']
         widgets = {
-            'name': forms.TextInput(attrs={'value': ''}),
-            'description': forms.Textarea(attrs={'rows': 5, 'placeholder': ''}),
-            'image': forms.FileInput(attrs={'upload_to': ''}),
-            'image_url': forms.TextInput(attrs={'value': ''}),
-            'cost': forms.NumberInput(attrs={'type': 'number'}),
-            'date': forms.DateInput(format={'%d-%m-%Y'}, attrs={'type': 'date'})
+            'name': forms.TextInput(attrs={'value': '', 'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'rows': 5, 'placeholder': '', 'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'upload_to': '', 'class': 'form-control'}),
+            'image_url': forms.TextInput(attrs={'value': '', 'class': 'form-control'}),
+            'cost': forms.NumberInput(attrs={'type': 'number', 'class': 'form-control'}),
+            'date': forms.DateInput(format={'%d-%m-%Y'}, attrs={'type': 'date', 'class': 'form-control'})
         }
         labels = {
             'name': 'Nombre:',
